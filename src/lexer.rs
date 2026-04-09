@@ -1,8 +1,13 @@
-use std::collections::VecDeque;
+use std::{
+  collections::VecDeque,
+};
 
-use crate::src_stream::SrcStream;
-use crate::token::{Token, UNKNOWN_TOKEN};
-use crate::tokenizer::parse_next;
+use crate::{
+  src_stream::SrcStream,
+  token::Token,
+  token::UNKNOWN_TOKEN,
+  tokenizer::parse_next,
+};
 
 
 pub struct Lexer<'a> {

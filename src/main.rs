@@ -5,9 +5,15 @@ mod src_stream;
 mod token;
 mod tokenizer;
 
-use std::fs;
-use crate::token::{Token, TokenType};
-use crate::lexer::Lexer;
+use std::{
+  fs
+};
+
+use crate::{
+  token::Token,
+  token::TokenType,
+  lexer::Lexer,
+};
 
 
 fn main() {

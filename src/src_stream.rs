@@ -1,4 +1,6 @@
-use std::str;
+use std::{
+  str,
+};
 
 
 const TABSTOP: usize = 8;

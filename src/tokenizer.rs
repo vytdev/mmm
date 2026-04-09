@@ -1,5 +1,8 @@
-use crate::src_stream::SrcStream;
-use crate::token::{Token, TokenType};
+use crate::{
+  src_stream::SrcStream,
+  token::Token,
+  token::TokenType,
+};
 
 
 pub fn parse_next<'a>(src: &mut SrcStream<'a>) -> Token<'a> {

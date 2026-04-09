@@ -1,4 +1,6 @@
-use crate::src_stream::SrcStream;
+use crate::{
+  src_stream::SrcStream,
+};
 
 
 #[derive(PartialEq, Eq)]
