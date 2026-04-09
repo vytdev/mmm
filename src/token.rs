@@ -7,8 +7,14 @@ use crate::{
 pub enum TokenType {
   UNKNOWN,
   EOF,
+
   IDENTIFIER,
   NUMBER,
+
+  PLUS,
+  DASH,
+  STAR,
+  SLASH,
 }
 
 

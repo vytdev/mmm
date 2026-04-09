@@ -16,6 +16,8 @@ pub fn parse_next<'a>(src: &mut SrcStream<'a>) -> Token<'a> {
       parse_name(src)
     } else if ch.is_numeric() {
       parse_number(src)
+    } else if "+-*/".contains(ch) {
+      parse_operator(src)
     } else {
       parse_unknown(src)
     }
@@ -63,5 +65,20 @@ pub fn parse_name<'a>(src: &mut SrcStream<'a>) -> Token<'a> {
 pub fn parse_number<'a>(src: &mut SrcStream<'a>) -> Token<'a> {
   let mut token = Token::from(src, TokenType::NUMBER);
   include_chars(src, &mut token, |ch| ch.is_numeric());
+  return token;
+}
+
+
+pub fn parse_operator<'a>(src: &mut SrcStream<'a>) -> Token<'a> {
+  let mut token = Token::from(src, TokenType::UNKNOWN);
+  let mut ch = src.next_char();
+  token.tt = match ch {
+    '+' => { TokenType::PLUS },
+    '-' => { TokenType::DASH },
+    '*' => { TokenType::STAR },
+    '/' => { TokenType::SLASH },
+    _   => { TokenType::UNKNOWN },
+  };
+  token.slice(1);
   return token;
 }
