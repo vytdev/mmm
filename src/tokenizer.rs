@@ -14,6 +14,8 @@ pub fn parse_next<'a>(src: &mut SrcStream<'a>) -> Token<'a> {
     let ch = src.peek_char();
     if ch.is_alphabetic() || ch == '_' {
       parse_name(src)
+    } else if ch.is_numeric() {
+      parse_number(src)
     } else {
       parse_unknown(src)
     }
@@ -30,32 +32,36 @@ pub fn skip_whitespace(src: &mut SrcStream) {
 }
 
 
-pub fn parse_unknown<'a>(src: &mut SrcStream<'a>) -> Token<'a> {
-  let mut token = Token::from(src, TokenType::UNKNOWN);
+pub fn include_chars(src: &mut SrcStream, tok: &mut Token,
+                     check: fn(char) -> bool)
+{
   let mut blen: usize = 0;
   while !src.is_eof() {
     let ch = src.peek_char();
-    if ch.is_whitespace() { break }
+    if !check(ch) { break }
     blen += ch.len_utf8();
     src.next_char();
   }
-  token.slice(blen);
+  tok.slice(blen);
+}
+
+
+pub fn parse_unknown<'a>(src: &mut SrcStream<'a>) -> Token<'a> {
+  let mut token = Token::from(src, TokenType::UNKNOWN);
+  include_chars(src, &mut token, |ch| !ch.is_whitespace());
   return token;
 }
 
 
 pub fn parse_name<'a>(src: &mut SrcStream<'a>) -> Token<'a> {
   let mut token = Token::from(src, TokenType::IDENTIFIER);
-  let mut blen: usize = 0;
-  while !src.is_eof() {
-    let ch = src.peek_char();
-    if ch.is_alphanumeric() || ch == '_' {
-      blen += ch.len_utf8();
-      src.next_char();
-      continue;
-    }
-    break;
-  }
-  token.slice(blen);
+  include_chars(src, &mut token, |ch| ch.is_alphanumeric() || ch == '_');
+  return token;
+}
+
+
+pub fn parse_number<'a>(src: &mut SrcStream<'a>) -> Token<'a> {
+  let mut token = Token::from(src, TokenType::NUMBER);
+  include_chars(src, &mut token, |ch| ch.is_numeric());
   return token;
 }
